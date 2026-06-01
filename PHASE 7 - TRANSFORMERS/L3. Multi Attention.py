@@ -141,3 +141,29 @@ def mha_forward(X, W_q, W_k, W_v, W_o, n_heads):
     output = weights @ Vh
     output = combine_heads(output)
     return output @ W_o, weights
+
+
+
+
+
+def split_heads(X, n_heads):
+    n, d = X.shape
+    d_head = d // n_heads
+    return X.reshape(n, n_heads, d_head).transpose(1, 0, 2)
+
+def combine_heads(H):
+    h, n, d_heads = H.shape
+    return H.transpose(1, 0, 2).reshape(n, h * d_heads)
+
+def mha_forward(X, Wq, Wk, Wv, Wo, n_heads):
+    Q = X @ Wq
+    K = X @ Wk
+    V = X @ Wv
+    Qh = split_heads(Q, n_heads)
+    Kh = split_heads(K, n_heads)
+    Vh = split_heads(V, n_heads)
+    scores = Qh @ Kh.tranpose(0, 2, 1) / np.sqrt(Qh.shape[-1])
+    weights = softmax(scores, axis=-1)
+    output = weights @ Vh
+    output = combine_heads(output)
+    return output @ Wo, weights
