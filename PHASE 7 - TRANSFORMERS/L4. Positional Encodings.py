@@ -69,4 +69,4 @@ Use It
 """
 from transformers import AutoModel
 model = AutoModel.from_pretrained("meta-llama/Llama-3.2-3B")
-# model.config.rope_scaling → {"type": "yarn", "factor": 32.0, "original_max_position_embeddings": 8192} # yarn + rope
+# model.config.rope_scaling → {"type": "yarn", "factor": 32.0, "original_max_position_embeddings": 8192} # yarn + rope yet another rope extension
