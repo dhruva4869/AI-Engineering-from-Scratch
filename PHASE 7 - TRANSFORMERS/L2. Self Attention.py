@@ -99,3 +99,232 @@ class SelfAttention:
         V = X @ self.Wv
         output, weights = scaled_dot_product_attention(Q, K, V)
         return output, weights
+
+
+
+
+"""
+Chalo ek simple sentence se samajhte hain:
+
+**Sentence:**
+
+```text
+"The animal didn't cross the street because it was tired"
+```
+
+Model jab word **"it"** pe aata hai, usko samajhna hai ki **"it" kiski taraf refer kar raha hai?**
+
+---
+
+## Step 1: Har word ka embedding
+
+Maan lo:
+
+| Word    | Embedding |
+| ------- | --------- |
+| The     | x₁        |
+| animal  | x₂        |
+| didn't  | x₃        |
+| cross   | x₄        |
+| street  | x₅        |
+| because | x₆        |
+| it      | x₇        |
+| was     | x₈        |
+| tired   | x₉        |
+
+Har embedding se 3 vectors bante hain:
+
+```text
+Q = Query
+K = Key
+V = Value
+```
+
+using learned matrices:
+
+[
+Q = XW_q
+]
+
+[
+K = XW_k
+]
+
+[
+V = XW_v
+]
+
+---
+
+## Step 2: Query kya hai?
+
+Jab hum **"it"** process kar rahe hain:
+
+```text
+Query(it)
+```
+
+basically pooch raha hai:
+
+> "Mujhe batao main kis word se information loon?"
+
+Think:
+
+```text
+Query = What am I looking for?
+```
+
+---
+
+## Step 3: Key kya hai?
+
+Har word apna key deta hai.
+
+```text
+animal -> Key_animal
+street -> Key_street
+tired -> Key_tired
+...
+```
+
+Key ko socho:
+
+```text
+Key = Main kis type ki information provide karta hu?
+```
+
+---
+
+## Step 4: Query aur Keys compare
+
+Model compute karta hai:
+
+[
+score = Q_{it} \cdot K_j
+]
+
+for every word.
+
+Example:
+
+| Word    | Score |
+| ------- | ----- |
+| animal  | 8.5   |
+| street  | 0.4   |
+| because | 0.1   |
+| tired   | 3.2   |
+
+Highest score:
+
+```text
+animal = 8.5
+```
+
+Matlab:
+
+> "it" ko lag raha hai "animal" important hai.
+
+---
+
+## Step 5: Softmax
+
+Scores ko probabilities mein convert karte hain:
+
+| Word   | Attention Weight |
+| ------ | ---------------- |
+| animal | 0.85             |
+| tired  | 0.10             |
+| street | 0.02             |
+| others | 0.03             |
+
+---
+
+## Step 6: Value kya hai?
+
+Ab actual information Value mein stored hai.
+
+```text
+animal -> V_animal
+street -> V_street
+...
+```
+
+Value ko socho:
+
+```text
+Value = Mere paas actual information hai
+```
+
+---
+
+## Step 7: Weighted Sum
+
+[
+Output =
+0.85V_{animal}
++
+0.10V_{tired}
++
+...
+]
+
+Since animal got most attention:
+
+```text
+Output ≈ V_animal
+```
+
+---
+
+## Real-life analogy
+
+Suppose:
+
+```text
+Query = "I need a database expert"
+```
+
+People in room:
+
+| Person  | Key        | Value         |
+| ------- | ---------- | ------------- |
+| Alice   | database   | her knowledge |
+| Bob     | frontend   | his knowledge |
+| Charlie | networking | his knowledge |
+
+Query compares against all Keys.
+
+Best match:
+
+```text
+database ↔ database
+```
+
+Then you take Alice's Value (actual knowledge).
+
+---
+
+### One-line summary
+
+For a token:
+
+* **Query** = "Mujhe kya dhoondhna hai?"
+* **Key** = "Main kis type ki information represent karta hu?"
+* **Value** = "Mere paas actual information kya hai?"
+
+Self-attention is basically:
+
+```text
+Query asks:
+"Who should I listen to?"
+
+Keys answer:
+"Listen to me if you need this kind of information."
+
+Values provide:
+"The actual information."
+```
+
+That's why attention score uses **Query × Key**, but the information that gets passed forward comes from **Value**.
+
+"""

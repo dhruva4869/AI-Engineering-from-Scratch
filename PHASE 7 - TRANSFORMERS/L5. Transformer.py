@@ -59,3 +59,18 @@ Isse ab woh apna new output generate krne lagega
 Input -> PE -> MHA -> AN -> FFN -> AN
 Output -> PE -> MMHA -> AN ->MHA (from up) ->FFN->AN ->next
 """
+
+
+
+
+"""
+Encoder
+I like football  ---> numerical  (Decoder)  -->  Mujhe football pasand hai
+
+Encoder
+Input embeddings   ---> PE  -----> MHA ------> Add & Norm  -------> FFN ----> Add & Norm
+
+Decoder
+Output embeddings   ---> PE  -----> Masked MHA ------> Add & Norm  -------> MHA ----> Add & Norm ----> FFN ----> Add & Norm
+
+"""

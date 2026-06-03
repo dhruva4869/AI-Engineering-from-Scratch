@@ -11,9 +11,9 @@ Ye wohi hai jo decoder mai masked multi head attention hai and GPT use krta hai 
 
 """
       t1  t2  t3  t4
-t1    ✓   -   -   -
-t2    ✓   ✓   -   -
-t3    ✓   ✓   ✓   -
+t1    ✓   0   0   0
+t2    ✓   ✓   0   0
+t3    ✓   ✓   ✓   0
 t4    ✓   ✓   ✓   ✓
 """
 

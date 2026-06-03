@@ -19,8 +19,8 @@ sin/cos added the angle value small part to the embedding, but that is very less
 
 """
 Absolute sinusoidal
-PE[pos, 2i] = sin(pos / 10000 ^ (2i/d))
-PE[pos, 2i+1] = cos(pos / 10000 ^ (2i/d))
+PE[pos, 2i] = sin(pos / 10000 ^ (2i/d)) --- [1,0] -- sin60 -- pi-x
+PE[pos, 2i+1] = cos(pos / 10000 ^ (2i/d)) --- [1,0] -- cos30 -- x+-1
 """
 import math
 def sinusodial(N, d):
@@ -39,6 +39,7 @@ RoPE Rotary Position Embeddings
 [q'_2i+1  ] = [ sin(pos·θ_i)   cos(pos·θ_i) ] [q_2i+1 ]
 
 θ_i = base^(-2i / d_head),  base = 10000 by default
+Query, Key, Value
 """
 def rope(x, pos, base=10000):
     d = len(x)
